@@ -45,3 +45,4 @@ app.listen(port, function() {
 //function logData(inStream){
 //console.log(inStream);
 //}
+readFile(fileName);
