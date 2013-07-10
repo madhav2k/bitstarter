@@ -2,15 +2,16 @@ var express = require('express');
 var fs = require("fs");
 
 var fileName = 'index.html';
-//var app = express.createServer(express.logger());
-//var self = this;
 var dataOut = '';
 
 var that = this;
 function readFile(fileName){
+//check if file exists
 fs.exists(fileName, function(exists) {
   if (exists) {
+    //check the size of stream
     fs.stat(fileName, function(error, stats) {
+      //open the file
       fs.open(fileName, "r", function(error, fd) {
         var buffer = new Buffer(stats.size);
         fs.read(fd, buffer, 0, buffer.length, null, function(error, bytesRead, buffer) {
@@ -18,31 +19,22 @@ fs.exists(fileName, function(exists) {
           console.log(data);
           var app = express.createServer(express.logger());
 
-app.get('/', function(request, response) {
-  response.send(data); 
-});      
+          app.get('/', function(request, response) {
+            response.send(data); 
+          });      
           
-var port = process.env.PORT || 5000;
-app.listen(port, function() {
-  console.log("Listening on " + port);
-});         
-          //osendWebResponse(data);
+          var port = process.env.PORT || 5000;
+          app.listen(port, function() {
+          console.log("Listening on " + port);
+          });         
           fs.close(fd);
         });
       });
     });
   }
+  else{
+    console.log("Invalid file passed");
+  }
 });
 }
-//app.get('/', function(request, response) {
-//  response.send(readFile(fileName)); 
-//});      
-          
-//var port = process.env.PORT || 5000;
-//app.listen(port, function() {
-//  console.log("Listening on " + port);
-//});         
-//function logData(inStream){
-//console.log(inStream);
-//}
 readFile(fileName);
