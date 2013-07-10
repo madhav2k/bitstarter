@@ -1,9 +1,13 @@
-//var express = require('express');
+var express = require('express');
 var fs = require("fs");
 
 var fileName = 'index.html';
 //var app = express.createServer(express.logger());
+//var self = this;
+var dataOut = '';
 
+var that = this;
+function readFile(fileName){
 fs.exists(fileName, function(exists) {
   if (exists) {
     fs.stat(fileName, function(error, stats) {
@@ -11,24 +15,25 @@ fs.exists(fileName, function(exists) {
         var buffer = new Buffer(stats.size);
         fs.read(fd, buffer, 0, buffer.length, null, function(error, bytesRead, buffer) {
           var data = buffer.toString("utf8", 0, buffer.length);
-          //console.log(dataOut);
-          //osendWebResponse(data);
+          console.log(data);
+          var app = express.createServer(express.logger());
+
 app.get('/', function(request, response) {
   response.send(data); 
 });      
-
+          
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });         
-          //return data;
+          //osendWebResponse(data);
           fs.close(fd);
         });
       });
     });
   }
 });
-
+}
 //app.get('/', function(request, response) {
 //  response.send(readFile(fileName)); 
 //});      
@@ -40,4 +45,3 @@ app.listen(port, function() {
 //function logData(inStream){
 //console.log(inStream);
 //}
-console.log(readFile(fileName));
